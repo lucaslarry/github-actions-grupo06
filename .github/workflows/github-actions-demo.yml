@@ -24,6 +24,6 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
       - name: Compilar e executar testes
-        run: mvn test -Dsurefire.suiteXmlFiles=suitsTeste.xml
+        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/suitsTeste.xml
 
 
