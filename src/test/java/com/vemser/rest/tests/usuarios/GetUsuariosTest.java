@@ -68,10 +68,10 @@ public class GetUsuariosTest {
         String administrador = response.getAdministrador();
 
         Assert.assertEquals("Usuário não encontrado",message);
-        Assert.assertNotNull(nome);
-        Assert.assertNotNull(email);
-        Assert.assertNotNull(password);
-        Assert.assertNotNull(administrador);
+        Assert.assertNull(nome);
+        Assert.assertNull(email);
+        Assert.assertNull(password);
+        Assert.assertNull(administrador);
     }
 
 
