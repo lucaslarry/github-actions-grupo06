@@ -1,4 +1,4 @@
-name: Build de Github Actions
+name: Build Projeto
 
 on:
   pull_request:
