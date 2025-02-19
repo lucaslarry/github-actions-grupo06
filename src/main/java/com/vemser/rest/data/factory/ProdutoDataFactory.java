@@ -2,7 +2,8 @@ package com.vemser.rest.data.factory;
 
 import com.vemser.rest.client.LoginClient;
 import com.vemser.rest.client.ProdutoClient;
-import com.vemser.rest.model.Produto;
+import com.vemser.rest.model.ProdutoRequest;
+import com.vemser.rest.model.ProdutoResponse;
 import net.datafaker.Faker;
 import java.util.Locale;
 import java.util.Random;
@@ -12,9 +13,9 @@ public class ProdutoDataFactory {
     private static final ProdutoClient produtoClient = new ProdutoClient();
     private static final LoginClient loginClient = new LoginClient();
 
-    private static Produto novoProduto()
+    private static ProdutoRequest novoProduto()
     {
-        Produto produto = new Produto();
+        ProdutoRequest produto = new ProdutoRequest();
 
         Random geradorBoolean = new Random();
 
@@ -26,7 +27,7 @@ public class ProdutoDataFactory {
         return produto;
     }
 
-    public static Produto produtoValido()
+    public static ProdutoRequest produtoValido()
     {
         return novoProduto();
     }
