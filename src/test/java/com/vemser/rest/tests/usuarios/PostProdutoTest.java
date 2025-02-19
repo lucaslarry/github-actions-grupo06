@@ -53,7 +53,7 @@ public class PostProdutoTest {
         produtoRequest = ProdutoDataFactory.produtoValido();
         produtoClient.cadastrarProduto(token,produtoRequest)
                 .then()
-                .statusCode(20111)
+                .statusCode(201)
                 .body(matchesJsonSchemaInClasspath("schemas/produtos_cadastrar.json"));
     }
 
