@@ -1,4 +1,4 @@
-name: Pipeline
+name: Build e Teste Projeto
 
 on:
   pull_request:
@@ -7,8 +7,14 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
+    runs-on: ubuntu-latest
+    steps:
+      - name: Chamar o workflow de build
+        uses: .github/workflows/build.yml
 
-  health_check_test:
+  heal_check_test:
+    runs-on: ubuntu-latest
     needs: build
-    uses: ./.github/workflows/health_check_test.yml
+    steps:
+      - name: Chamar o workflow de testes
+        uses: .github/workflows/health_check_test.yml

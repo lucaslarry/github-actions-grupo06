@@ -1,7 +1,15 @@
-jobs:
-  health_check_test:
-    runs-on: ubuntu-latest
+name: Teste Projeto
 
+on:
+  workflow_run:
+    workflows: ["Build Projeto"]
+    types:
+      - completed
+    conclusion: success
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
