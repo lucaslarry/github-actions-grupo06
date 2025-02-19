@@ -1,4 +1,4 @@
-name: Java CI para executar o teste e salvar o report no gh-pages.
+name: Java CI para executar testes e salvar report no GitHub Pages
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout do codigo
+      - name: Checkout do código
         uses: actions/checkout@v4
 
       - name: Configurar JDK
@@ -18,32 +18,71 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Build e Testes Contrato
+      - name: Build do projeto
+        run: mvn clean install -DskipTests
+
+  test-contrato:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Executar testes de Contrato
         run: mvn test -Dgroups=Contrato
         continue-on-error: true
 
-      - name: Build e Testes Funcional
+      - name: Coletar resultados do Allure
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results-contrato
+          path: target/allure-results
+
+  test-funcional:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Executar testes Funcionais
         run: mvn test -Dgroups=Funcional
         continue-on-error: true
 
-      - name: Get allure history
-        uses: actions/checkout@v2
-        continue-on-error: true
+      - name: Coletar resultados do Allure
+        if: always()
+        uses: actions/upload-artifact@v3
         with:
-          ref: gh-pages
-          path: gh-pages
+          name: allure-results-funcional
+          path: target/allure-results
 
-      - name: Allure Report action
+  allure-report:
+    runs-on: ubuntu-latest
+    needs: [test-contrato, test-funcional]
+    if: always()
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Baixar resultados do Allure
+        uses: actions/download-artifact@v3
+        with:
+          path: allure-results
+
+      - name: Gerar Allure Report
         uses: simple-elf/allure-report-action@master
         with:
-          allure_results: target/allure-results
-          allure_history: allure-history/allure-history
-          keep_reports: 5
+          allure_results: allure-results
+          allure_history: allure-history
 
-      - name: Deploy report to Github Pages
-        if: github.ref == 'refs/heads/master'
+      - name: Deploy no GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
-          access_token: ${{ secrets.GITHUB_TOKEN }}
           branch: gh-pages
-          folder: allure-history/allure-history
+          folder: allure-history
