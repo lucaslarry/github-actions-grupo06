@@ -59,35 +59,29 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
       - name: Get Allure history
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
         if: always()
         continue-on-error: true
         with:
-          ref: main
-          path: main
+          ref: gh-pages
+          path: gh-pages
 
-      - name: Gerar relatório do Allure
+      - name: Allure Report action from marketplace
         uses: simple-elf/allure-report-action@master
         if: always()
         id: allure-report
         with:
-          allure_results: /allure-results/
-          gh_pages: main
+          allure_results: allure-results
+          gh_pages: gh-pages
           allure_report: allure-report
           allure_history: allure-history
 
-      - name: Verificar arquivos antes do deploy
-        run: ls -R allure-history
-
-      - name: Deploy do relatório para GitHub Pages
+      - name: Deploy report to Github Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: main
-          publish_dir: allure-history
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history
 
