@@ -139,7 +139,7 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"username": "GitHub Actions", "content": "✅ Testes concluídos com sucesso!\n🔗 [Ver relatório do Allure](https://seu-usuario.github.io/seu-repositorio)"}' \
+               -d '{"username": "GitHub Actions", "content": "✅ Testes concluídos com sucesso!\n🔗 [Ver relatório do Allure](https://lucaslarry.github.io/github-actions-grupo06)"}' \
                $DISCORD_WEBHOOK
 
       - name: Notificar falha no Discord
@@ -149,7 +149,7 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"username": "GitHub Actions", "content": "❌ Testes falharam! Verifique os logs no GitHub Actions."}' \
+               -d '{"username": "GitHub Actions", "content": "❌ Testes falharam! Verifique os logs no GitHub Actions.🔗 [Ver relatório do Allure](https://lucaslarry.github.io/github-actions-grupo06)"}' \
                $DISCORD_WEBHOOK
 
 
