@@ -82,13 +82,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: allure-results-contrato
-          path: allure-results
+          path: target/allure-results
 
       - name: Baixar resultados do Allure - Funcional
         uses: actions/download-artifact@v4
         with:
           name: allure-results-funcional
-          path: allure-results
+          path: target/allure-results
 
 
       - name: Gerar e publicar Allure Report
