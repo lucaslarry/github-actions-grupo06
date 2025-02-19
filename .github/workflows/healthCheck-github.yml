@@ -2,7 +2,7 @@ name: Executar Testes
 
 on:
   workflow_run:
-    workflows: ["build-github-actions.yml"]
+    workflows: ["Build Projeto"]
     types:
       - completed
     conclusion: success
@@ -15,7 +15,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: projeto-build
-          path: target/
+          path: downloaded-artifact/
 
       - name: Configurar JDK
         uses: actions/setup-java@v3
