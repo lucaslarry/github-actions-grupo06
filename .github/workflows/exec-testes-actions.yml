@@ -2,7 +2,7 @@ name: Executar Testes
 
 on:
   workflow_run:
-    workflows: ["Build Projeto"]
+    workflows: ["build-github-actions.yml"]
     types:
       - completed
     conclusion: success
