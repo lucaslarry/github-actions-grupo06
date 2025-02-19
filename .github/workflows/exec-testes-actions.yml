@@ -17,9 +17,6 @@ jobs:
           name: projeto-build
           path: target/
 
-      - name: Listar arquivos baixados
-        run: ls -R target/
-
       - name: Configurar JDK
         uses: actions/setup-java@v3
         with:
