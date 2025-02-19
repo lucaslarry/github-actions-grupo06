@@ -117,6 +117,8 @@ public class GetUsuariosTest {
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se os usuários podem ser listados corretamente ao consultar por email")
     @Owner("Lucas Larry")
+
+
     @Step("Deve listar usuários por email com sucesso")
     public void testDeveListarUsuariosPorEmailComSucesso(){
         UsuarioResponse usuario = UsuarioDataFactory.cadastrarUsuario();
