@@ -1,0 +1,33 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Contrato">
+    <test name="Schema Get Usuarios">
+        <classes>
+            <class name="com.vemser.rest.tests.usuarios.GetUsuariosTest">
+                <methods>
+                    <include name="testSchemaListarUsuariosPorIDComSucesso"/>
+                    <include name ="testSchemaListarUsuariosPorEmailComSucesso"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Schema Get Produto">
+        <classes>
+            <class name="com.vemser.rest.tests.usuarios.GetProdutosTest">
+                <methods>
+                    <include name="testSchemaDeveListarProdutoIDValido"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Schema Post Produto">
+        <classes>
+            <class name="com.vemser.rest.tests.usuarios.PostProdutoTest">
+                <methods>
+                    <include name="testeSchemaDeveCadastrarProdutoValido"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

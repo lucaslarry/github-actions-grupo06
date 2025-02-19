@@ -3,14 +3,14 @@ package com.vemser.rest.tests.usuarios;
 import com.vemser.rest.client.ProdutoClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.data.factory.ProdutoDataFactory;
-import com.vemser.rest.model.Produto;
+import com.vemser.rest.model.ProdutoRequest;
+import com.vemser.rest.model.ProdutoResponse;
 import com.vemser.rest.utils.PropertiesExecutioner;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
 
 import java.util.List;
 
@@ -20,7 +20,8 @@ public class GetProdutosTest {
 
     private final ProdutoClient produtoClient = new ProdutoClient();
 
-    private Produto produto;
+    private ProdutoRequest produtoRequest;
+    private ProdutoResponse produtoResponse;
     private String token;
     private String id;
 
@@ -28,9 +29,9 @@ public class GetProdutosTest {
     public void setup()
     {
         token = LoginDataFactory.loginTokenManager();
-        produto = ProdutoDataFactory.produtoValido();
+        produtoRequest = ProdutoDataFactory.produtoValido();
         Response response =
-                produtoClient.cadastrarProduto(token,produto)
+                produtoClient.cadastrarProduto(token,produtoRequest)
                         .then()
                         .extract().response();
         id = response.jsonPath().get("_id");
@@ -45,7 +46,7 @@ public class GetProdutosTest {
                         .statusCode(200)
                         .extract().response();
 
-        List<Produto> produtos = response.jsonPath().getList("produtos", Produto.class);
+        List<ProdutoResponse> produtos = response.jsonPath().getList("produtos", ProdutoResponse.class);
 
         for(var produto : produtos )
         {
@@ -73,8 +74,8 @@ public class GetProdutosTest {
                         .statusCode(200)
                         .extract().response();
 
-        Assert.assertNotNull(produto.getNome());
-        Assert.assertNotNull(produto.getDescricao());
+        Assert.assertNotNull(listarResponse.jsonPath().get("nome"));
+        Assert.assertNotNull(listarResponse.jsonPath().get("descricao"));
     }
 
     @Test
