@@ -15,7 +15,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: projeto-build
-          path: downloaded-artifact/
+          path: target/
 
       - name: Configurar JDK
         uses: actions/setup-java@v3
