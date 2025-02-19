@@ -1,0 +1,26 @@
+name: Build de Github Actions
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Salvar Build como Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: projeto-build
+          path: target/
