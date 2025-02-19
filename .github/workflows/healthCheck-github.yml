@@ -1,4 +1,4 @@
-name: Executar Testes
+name: Teste HealthCheck
 
 on:
   workflow_run:
@@ -15,7 +15,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: projeto-build
-          path: target/
+          path: /target
 
       - name: Configurar JDK
         uses: actions/setup-java@v3
