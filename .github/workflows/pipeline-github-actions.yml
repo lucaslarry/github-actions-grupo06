@@ -70,11 +70,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Baixar workspace
-        uses: actions/download-artifact@v4
-        with:
-          name: workspace
-          path: .
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
 
       - name: Baixar resultados do Allure - Contrato
         uses: actions/download-artifact@v4
