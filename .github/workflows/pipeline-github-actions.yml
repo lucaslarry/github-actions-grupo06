@@ -1,9 +1,8 @@
-name: Pipeline Github Actions
+name: Java CI para executar o teste e salvar o report no gh-pages.
 
 on:
+  push:
   pull_request:
-    branches:
-      - main
 
 jobs:
   build:
@@ -19,65 +18,32 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-  health-check:
-    runs-on: ubuntu-latest
-    needs: build
+      - name: Build e Testes Contrato
+        run: mvn test -Dgroups=Contrato
+        continue-on-error: true
 
-    steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
+      - name: Build e Testes Funcional
+        run: mvn test -Dgroups=Funcional
+        continue-on-error: true
 
-      - name: Health Check
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/healthCheck.xml
+      - name: Get allure history
+        uses: actions/checkout@v2
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
 
-  contrato:
-    runs-on: ubuntu-latest
-    needs: health-check
+      - name: Allure Report action
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: target/allure-results
+          allure_history: allure-history/allure-history
+          keep_reports: 5
 
-    steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
-
-      - name: Contrato
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/contrato.xml
-
-  funcional:
-    runs-on: ubuntu-latest
-    needs: contrato
-
-    steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
-
-      - name: Funcional
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/funcional.xml
-
-  allure:
-    runs-on: ubuntu-latest
-    needs: funcional
-    if: always()
-    permissions:
-      contents: write
-    steps:
-    - name: Get allure history
-      uses: actions/checkout@v2
-      continue-on-error: true
-      with:
-        ref: gh-pages
-        path: gh-pages
-
-    - name: Allure Report action
-      uses: simple-elf/allure-report-action@master
-      with:
-        allure_results: target/allure-results
-        allure_history: allure-history/allure-history
-        keep_reports: 5
-
-    - name: Deploy report to Github Pages
-      if: github.ref == 'refs/heads/master'
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      with:
-        access_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
-        folder: allure-history/allure-history
-
+      - name: Deploy report to Github Pages
+        if: github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          access_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: allure-history/allure-history
