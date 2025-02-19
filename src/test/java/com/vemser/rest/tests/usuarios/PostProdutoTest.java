@@ -4,6 +4,7 @@ import com.vemser.rest.client.ProdutoClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.data.factory.ProdutoDataFactory;
 import com.vemser.rest.model.ProdutoRequest;
+import io.qameta.allure.testng.Tag;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -39,7 +40,8 @@ public class PostProdutoTest {
         id = response.jsonPath().get("_id");
     }
 
-    @Test
+    @Test(groups = "Contrato")
+    @Tag("Contrato")
     @Story("Usuário cadastra um produto com sucesso")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se o produto é cadastrado corretamente com dados válidos e schema esperado")
@@ -55,7 +57,8 @@ public class PostProdutoTest {
                 .body(matchesJsonSchemaInClasspath("schemas/produtos_cadastrar.json"));
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário cadastra um produto com sucesso")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se o produto é cadastrado corretamente com dados válidos")

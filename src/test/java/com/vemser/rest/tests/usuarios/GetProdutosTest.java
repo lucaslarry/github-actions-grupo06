@@ -6,6 +6,7 @@ import com.vemser.rest.data.factory.ProdutoDataFactory;
 import com.vemser.rest.model.ProdutoRequest;
 import com.vemser.rest.model.ProdutoResponse;
 import com.vemser.rest.utils.PropertiesExecutioner;
+import io.qameta.allure.testng.Tag;
 import io.restassured.response.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.Assert;
@@ -44,7 +45,8 @@ public class GetProdutosTest {
         id = response.jsonPath().get("_id");
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário realiza um depósito com sucesso")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se um depósito é realizado corretamente com dados válidos")
@@ -68,7 +70,8 @@ public class GetProdutosTest {
         Allure.addAttachment("Produtos Cadastrados", response.body().asString());
     }
 
-    @Test
+    @Test(groups = "Contrato")
+    @Tag("Contrato")
     @Story("Usuário valida o schema de produto por ID")
     @Severity(SeverityLevel.NORMAL)
     @Description("Valida se o schema de produto por ID está correto")
@@ -81,8 +84,8 @@ public class GetProdutosTest {
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/produtos_por_id.json"));
     }
-
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário consulta produto por ID válido")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se um produto pode ser listado corretamente com ID válido")
@@ -101,7 +104,8 @@ public class GetProdutosTest {
         Allure.addAttachment("Produto por ID", listarResponse.body().asString());
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário tenta listar produto com ID inválido")
     @Severity(SeverityLevel.MINOR)
     @Description("Valida se a tentativa de listar um produto com ID inválido retorna o erro correto")

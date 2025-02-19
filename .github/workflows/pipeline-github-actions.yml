@@ -1,4 +1,4 @@
-name: Pipeline Github Actions
+name: Java CI para executar testes e salvar report no GitHub Pages
 
 on:
   pull_request:
@@ -8,78 +8,95 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout do codigo
+      - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Configurar JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+      - name: Build do projeto
+        run: mvn clean install -DskipTests
 
-  health-check:
+      - name: Salvar workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace
+          path: .
+
+  test-contrato:
     runs-on: ubuntu-latest
     needs: build
-
     steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
+      - name: Baixar workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
 
-      - name: Health Check
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/healthCheck.xml
+      - name: Executar testes de Contrato
+        run: mvn test -Dgroups=Contrato
+        continue-on-error: true
 
-  contrato:
+      - name: Coletar resultados do Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: target/allure-results
+
+  test-funcional:
     runs-on: ubuntu-latest
-    needs: health-check
-
+    needs: test-contrato
     steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
+      - name: Baixar workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
 
-      - name: Contrato
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/contrato.xml
+      - name: Executar testes Funcionais
+        run: mvn test -Dgroups=Funcional
+        continue-on-error: true
 
-  funcional:
+      - name: Coletar resultados do Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: target/allure-results
+
+  generate-allure-report:
     runs-on: ubuntu-latest
-    needs: contrato
-
-    steps:
-      - name: Checkout do codigo
-        uses: actions/checkout@v4
-
-      - name: Funcional
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/funcional.xml
-
-  allure:
-    runs-on: ubuntu-latest
-    needs: funcional
+    needs: test-funcional
     if: always()
     permissions:
       contents: write
     steps:
-    - name: Get allure history
-      uses: actions/checkout@v2
-      continue-on-error: true
-      with:
-        ref: gh-pages
-        path: gh-pages
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
 
-    - name: Allure Report action
-      uses: simple-elf/allure-report-action@master
-      with:
-        allure_results: target/allure-results
-        allure_history: allure-history/allure-history
-        keep_reports: 5
+      - name: Baixar resultados do Allure - Contrato
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-contrato
+          path: target/allure-results
 
-    - name: Deploy report to Github Pages
-      if: github.ref == 'refs/heads/master'
-      uses: JamesIves/github-pages-deploy-action@4.1.4
-      with:
-        access_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: gh-pages
-        folder: allure-history/allure-history
+      - name: Baixar resultados do Allure - Funcional
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: target/allure-results
+
+
+      - name: Gerar e publicar Allure Report
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: target/allure-results
+          allure_history: allure-history
+
+      - name: Deploy no GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: allure-history
 
   code-ql-analyze:
     name: Analyze

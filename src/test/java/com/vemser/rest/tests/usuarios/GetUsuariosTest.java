@@ -3,6 +3,7 @@ package com.vemser.rest.tests.usuarios;
 import com.vemser.rest.client.UsuarioClient;
 import com.vemser.rest.data.factory.UsuarioDataFactory;
 import com.vemser.rest.model.UsuarioResponse;
+import io.qameta.allure.testng.Tag;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -21,7 +22,8 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 public class GetUsuariosTest {
     private UsuarioClient usuarioClient = new UsuarioClient();
 
-    @Test
+    @Test(groups = "Contrato")
+    @Tag("Contrato")
     @Story("Usuário valida schema de resposta ao listar usuários por ID")
     @Severity(SeverityLevel.NORMAL)
     @Description("Valida se o schema de resposta ao listar usuários por ID está correto")
@@ -38,7 +40,8 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário consulta e valida os dados de um usuário por ID")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se os dados do usuário podem ser recuperados corretamente ao consultar por ID")
@@ -66,7 +69,8 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário tenta consultar um usuário com ID inexistente")
     @Severity(SeverityLevel.MINOR)
     @Description("Valida se ao tentar listar um usuário com ID inválido, a resposta contém a mensagem de erro correta")
@@ -94,7 +98,8 @@ public class GetUsuariosTest {
         Assert.assertNull(administrador);
     }
 
-    @Test
+    @Test(groups = "Contrato")
+    @Tag("Contrato")
     @Story("Usuário valida schema de resposta ao listar usuários por email")
     @Severity(SeverityLevel.NORMAL)
     @Description("Valida se o schema de resposta ao listar usuários por email está correto")
@@ -112,13 +117,12 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário consulta e valida a listagem de usuários por email")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se os usuários podem ser listados corretamente ao consultar por email")
     @Owner("Lucas Larry")
-
-
     @Step("Deve listar usuários por email com sucesso")
     public void testDeveListarUsuariosPorEmailComSucesso(){
         UsuarioResponse usuario = UsuarioDataFactory.cadastrarUsuario();
@@ -137,7 +141,8 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
+    @Tag("Funcional")
     @Story("Usuário tenta listar usuários com email inválido")
     @Severity(SeverityLevel.MINOR)
     @Description("Valida se ao tentar listar usuários com um email inválido, a resposta contém a mensagem de erro correta")
