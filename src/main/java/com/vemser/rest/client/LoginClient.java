@@ -14,7 +14,7 @@ public class LoginClient extends BaseClient{
                 given()
                         .spec(super.set())
                         .body(login)
-                        .when()
+                .when()
                         .post(LOGIN)
                 ;
     }

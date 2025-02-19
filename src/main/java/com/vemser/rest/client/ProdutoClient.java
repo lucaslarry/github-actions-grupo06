@@ -1,5 +1,6 @@
 package com.vemser.rest.client;
 
+import com.vemser.rest.model.Produto;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
@@ -16,7 +17,7 @@ public class ProdutoClient extends BaseClient{
                         .spec(super.set())
                         .auth().oauth2(token)
                         .body(produto)
-                        .when()
+                .when()
                         .post(PRODUTOS)
                 ;
     }

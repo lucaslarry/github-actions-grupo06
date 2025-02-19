@@ -1,14 +1,16 @@
-name: Rodar Testes
-run-name: ${{ github.actor }} está testando 🚀
+name: Build de Github Actions
+
 on:
   pull_request:
     branches:
       - main
+
 jobs:
-  Testes:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout do código
+      - name: Checkout do cÃ³digo
         uses: actions/checkout@v4
 
       - name: Configurar JDK
@@ -22,8 +24,14 @@ jobs:
         with:
           path: ~/.m2
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
 
-      - name: Compilar e executar testes
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/suitsTeste.xml
+      - name: Compilar Projeto
+        run: mvn clean package
 
-
+      - name: Salvar Build como Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: projeto-build
+          path: target/  # Pasta onde o Maven salva a build
