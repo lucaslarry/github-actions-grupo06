@@ -22,7 +22,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 public class GetUsuariosTest {
     private UsuarioClient usuarioClient = new UsuarioClient();
 
-    @Test
+    @Test(groups = "Contrato")
     @Tag("Contrato")
     @Story("Usuário valida schema de resposta ao listar usuários por ID")
     @Severity(SeverityLevel.NORMAL)
@@ -40,7 +40,7 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário consulta e valida os dados de um usuário por ID")
     @Severity(SeverityLevel.CRITICAL)
@@ -69,7 +69,7 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário tenta consultar um usuário com ID inexistente")
     @Severity(SeverityLevel.MINOR)
@@ -98,7 +98,7 @@ public class GetUsuariosTest {
         Assert.assertNull(administrador);
     }
 
-    @Test
+    @Test(groups = "Contrato")
     @Tag("Contrato")
     @Story("Usuário valida schema de resposta ao listar usuários por email")
     @Severity(SeverityLevel.NORMAL)
@@ -117,7 +117,7 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário consulta e valida a listagem de usuários por email")
     @Severity(SeverityLevel.CRITICAL)
@@ -141,7 +141,7 @@ public class GetUsuariosTest {
         UsuarioDataFactory.deletarUsuario(usuario);
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário tenta listar usuários com email inválido")
     @Severity(SeverityLevel.MINOR)

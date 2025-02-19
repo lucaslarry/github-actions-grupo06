@@ -40,7 +40,7 @@ public class PostProdutoTest {
         id = response.jsonPath().get("_id");
     }
 
-    @Test
+    @Test(groups = "Contrato")
     @Tag("Contrato")
     @Story("Usuário cadastra um produto com sucesso")
     @Severity(SeverityLevel.CRITICAL)
@@ -57,7 +57,7 @@ public class PostProdutoTest {
                 .body(matchesJsonSchemaInClasspath("schemas/produtos_cadastrar.json"));
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário cadastra um produto com sucesso")
     @Severity(SeverityLevel.CRITICAL)

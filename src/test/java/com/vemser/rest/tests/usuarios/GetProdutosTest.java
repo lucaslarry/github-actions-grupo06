@@ -45,7 +45,7 @@ public class GetProdutosTest {
         id = response.jsonPath().get("_id");
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário realiza um depósito com sucesso")
     @Severity(SeverityLevel.CRITICAL)
@@ -70,7 +70,7 @@ public class GetProdutosTest {
         Allure.addAttachment("Produtos Cadastrados", response.body().asString());
     }
 
-    @Test
+    @Test(groups = "Contrato")
     @Tag("Contrato")
     @Story("Usuário valida o schema de produto por ID")
     @Severity(SeverityLevel.NORMAL)
@@ -84,8 +84,7 @@ public class GetProdutosTest {
                 .statusCode(200)
                 .body(matchesJsonSchemaInClasspath("schemas/produtos_por_id.json"));
     }
-
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário consulta produto por ID válido")
     @Severity(SeverityLevel.CRITICAL)
@@ -105,7 +104,7 @@ public class GetProdutosTest {
         Allure.addAttachment("Produto por ID", listarResponse.body().asString());
     }
 
-    @Test
+    @Test(groups = "Funcional")
     @Tag("Funcional")
     @Story("Usuário tenta listar produto com ID inválido")
     @Severity(SeverityLevel.MINOR)
