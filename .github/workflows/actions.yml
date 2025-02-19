@@ -1,4 +1,4 @@
-name: Build e Teste Projeto
+name: Pipeline
 
 on:
   pull_request:
@@ -7,26 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
-      - name: Configurar JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Construir o projeto
-        run: mvn clean package -DskipTests
+    uses: ./.github/workflows/build.yml
 
   health_check_test:
-    runs-on: ubuntu-latest
     needs: build
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-      - name: Executar Testes
-        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/healthCheck.xml
+    uses: ./.github/workflows/health_check_test.yml

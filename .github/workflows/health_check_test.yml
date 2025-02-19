@@ -1,0 +1,10 @@
+jobs:
+  health_check_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Executar Testes
+        run: mvn test -Dsurefire.suiteXmlFiles=src/test/resources/testes/healthCheck.xml
