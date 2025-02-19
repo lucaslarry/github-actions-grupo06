@@ -3,7 +3,7 @@ package com.vemser.rest.tests.usuarios;
 import com.vemser.rest.client.ProdutoClient;
 import com.vemser.rest.data.factory.LoginDataFactory;
 import com.vemser.rest.data.factory.ProdutoDataFactory;
-import com.vemser.rest.model.Produto;
+import com.vemser.rest.model.ProdutoRequest;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
@@ -14,7 +14,7 @@ import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInC
 public class PostProdutoTest {
     private final ProdutoClient produtoClient = new ProdutoClient();
 
-    private Produto produto;
+    private ProdutoRequest produtoRequest;
     private String id;
     private String token;
 
@@ -22,10 +22,10 @@ public class PostProdutoTest {
     public void setup()
     {
         token = LoginDataFactory.loginTokenManager();
-        produto = ProdutoDataFactory.produtoValido();
+        produtoRequest = ProdutoDataFactory.produtoValido();
 
         Response response =
-                produtoClient.cadastrarProduto(token,produto)
+                produtoClient.cadastrarProduto(token,produtoRequest)
                         .then()
                         .extract().response();
         id = response.jsonPath().get("_id");
@@ -35,8 +35,8 @@ public class PostProdutoTest {
     public void testeSchemaDeveCadastrarProdutoValido()
     {
         token = LoginDataFactory.loginTokenManager();
-        produto = ProdutoDataFactory.produtoValido();
-        produtoClient.cadastrarProduto(token,produto)
+        produtoRequest = ProdutoDataFactory.produtoValido();
+        produtoClient.cadastrarProduto(token,produtoRequest)
                 .then()
                 .statusCode(201)
                 .body(matchesJsonSchemaInClasspath("schemas/produtos_cadastrar.json"));
@@ -46,9 +46,9 @@ public class PostProdutoTest {
     public void testeDeveCadastrarProdutoValido()
     {
         token = LoginDataFactory.loginTokenManager();
-        produto = ProdutoDataFactory.produtoValido();
+        produtoRequest = ProdutoDataFactory.produtoValido();
 
-        Response response = produtoClient.cadastrarProduto(token,produto)
+        Response response = produtoClient.cadastrarProduto(token,produtoRequest)
                 .then()
                 .statusCode(201)
                 .extract().response();

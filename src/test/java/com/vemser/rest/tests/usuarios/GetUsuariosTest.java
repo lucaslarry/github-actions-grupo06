@@ -118,8 +118,4 @@ public class GetUsuariosTest {
         String emailMessage = response.getEmail();
         Assert.assertEquals("email deve ser um email válido", emailMessage);
     }
-
-
-
-
 }

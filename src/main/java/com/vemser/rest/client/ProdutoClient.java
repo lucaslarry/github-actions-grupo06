@@ -1,6 +1,7 @@
 package com.vemser.rest.client;
 
-import com.vemser.rest.model.Produto;
+import com.vemser.rest.model.ProdutoRequest;
+import com.vemser.rest.model.ProdutoResponse;
 import io.restassured.response.Response;
 import static io.restassured.RestAssured.given;
 
@@ -10,7 +11,7 @@ public class ProdutoClient extends BaseClient{
     private final String PRODUTOS_ID = "/produtos/{_id}";
     private final String ENDPOINT_ID_VAR = "_id";
 
-    public Response cadastrarProduto(String token, Produto produto)
+    public Response cadastrarProduto(String token, ProdutoRequest produto)
     {
         return
                 given()
