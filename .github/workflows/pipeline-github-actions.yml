@@ -72,13 +72,24 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Checkout do código
-        uses: actions/checkout@v4
-
-      - name: Baixar resultados do Allure
+      - name: Baixar workspace
         uses: actions/download-artifact@v4
         with:
+          name: workspace
+          path: .
+
+      - name: Baixar resultados do Allure - Contrato
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-contrato
           path: allure-results
+
+      - name: Baixar resultados do Allure - Funcional
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results-funcional
+          path: allure-results
+
 
       - name: Gerar e publicar Allure Report
         uses: simple-elf/allure-report-action@master
