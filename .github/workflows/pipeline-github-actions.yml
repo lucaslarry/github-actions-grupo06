@@ -73,6 +73,12 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
+      - name: Baixar histórico do Allure
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-history
+          path: allure-history
+
       - name: Baixar resultados do Allure - Contrato
         uses: actions/download-artifact@v4
         with:
@@ -85,7 +91,6 @@ jobs:
           name: allure-results-funcional
           path: target/allure-results
 
-
       - name: Gerar e publicar Allure Report
         uses: simple-elf/allure-report-action@master
         with:
@@ -97,6 +102,8 @@ jobs:
         with:
           branch: gh-pages
           folder: allure-history
+          clean: false
+
 
   code-ql-analyze:
     name: Analyze
