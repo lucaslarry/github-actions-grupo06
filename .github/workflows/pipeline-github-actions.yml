@@ -73,6 +73,17 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
+      - name: Configurar Git para recuperar histórico
+        run: |
+          git fetch --depth=1 origin gh-pages || echo "Nenhum histórico encontrado"
+
+      - name: Baixar histórico do Allure se existir
+        run: |
+          mkdir -p allure-history
+          if [ -d "allure-history" ]; then
+            git checkout gh-pages -- allure-history
+          fi
+
       - name: Baixar resultados do Allure - Contrato
         uses: actions/download-artifact@v4
         with:
@@ -85,31 +96,26 @@ jobs:
           name: allure-results-funcional
           path: target/allure-results
 
-
-      - name: Baixar histórico do Allure (se existir)
-        uses: actions/download-artifact@v4
-        continue-on-error: true
-        with:
-          name: allure-history
-          path: allure-history
-
       - name: Gerar e publicar Allure Report
         uses: simple-elf/allure-report-action@master
         with:
           allure_results: target/allure-results
           allure_history: allure-history
 
-      - name: Salvar histórico atualizado do Allure
-        uses: actions/upload-artifact@v4
-        with:
-          name: allure-history
-          path: allure-history
+      - name: Commit e push do histórico atualizado
+        run: |
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add allure-history || echo "Nada para adicionar"
+          git commit -m "Atualizando Allure History" || echo "Nada para commitar"
+          git push origin gh-pages || echo "Nada para atualizar"
 
       - name: Deploy no GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: gh-pages
           folder: allure-history
+
 
   code-ql-analyze:
     name: Analyze
