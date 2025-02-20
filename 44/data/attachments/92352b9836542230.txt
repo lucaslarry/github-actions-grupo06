@@ -1,7 +1,0 @@
-{
-    "nome": "TekPix 1739967669867",
-    "preco": 580,
-    "descricao": "Tekpix 2008",
-    "quantidade": 5,
-    "_id": "ndLTV2dP4XV0SXYt"
-}
