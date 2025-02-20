@@ -86,11 +86,24 @@ jobs:
           path: target/allure-results
 
 
+      - name: Baixar histórico do Allure (se existir)
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          name: allure-history
+          path: allure-history
+
       - name: Gerar e publicar Allure Report
         uses: simple-elf/allure-report-action@master
         with:
           allure_results: target/allure-results
           allure_history: allure-history
+
+      - name: Salvar histórico atualizado do Allure
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-history
+          path: allure-history
 
       - name: Deploy no GitHub Pages
         uses: JamesIves/github-pages-deploy-action@4.1.4
