@@ -1,6 +1,8 @@
 name: Java CI para executar testes e salvar report no GitHub Pages
-
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -119,10 +121,10 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         language: ${{matrix.language}}
-        
+
     - name: Autobuild
       uses: github/codeql-action/autobuild@v2
-      
+
     - name: CodeQL Analysis
       uses: github/codeql-action/analyze@v2
       with:

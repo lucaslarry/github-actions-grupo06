@@ -153,7 +153,7 @@ public class GetUsuariosTest {
         UsuarioResponse response =
                 usuarioClient.listarUsuariosQuerryParam("email", email)
                         .then()
-                        .statusCode(4100)
+                        .statusCode(400)
                         .extract().as(UsuarioResponse.class);
 
         String emailMessage = response.getEmail();
