@@ -1,6 +1,8 @@
 name: Java CI para executar testes e salvar report no GitHub Pages
-
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
@@ -62,6 +64,7 @@ jobs:
         with:
           name: allure-results-funcional
           path: target/allure-results
+
   generate-allure-report:
     runs-on: ubuntu-latest
     needs: test-funcional
@@ -71,13 +74,6 @@ jobs:
     steps:
       - name: Checkout do repositório
         uses: actions/checkout@v4
-
-      - name: Baixar histórico do Allure
-        continue-on-error: true
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-history
-          path: allure-history
 
       - name: Baixar resultados do Allure - Contrato
         uses: actions/download-artifact@v4
@@ -91,18 +87,18 @@ jobs:
           name: allure-results-funcional
           path: target/allure-results
 
+      - name: Baixar histórico do Allure (se existir)
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-history
+          path: allure-history
+          if-no-files-found: ignore
+
       - name: Gerar e publicar Allure Report
         uses: simple-elf/allure-report-action@master
         with:
           allure_results: target/allure-results
           allure_history: allure-history
-
-      - name: Deploy no GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.4
-        with:
-          branch: gh-pages
-          folder: allure-history
-          clean: false
 
       - name: Salvar histórico do Allure
         uses: actions/upload-artifact@v4
@@ -110,7 +106,11 @@ jobs:
           name: allure-history
           path: allure-history
 
-
+      - name: Deploy no GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: allure-history
 
   code-ql-analyze:
     name: Analyze
@@ -126,21 +126,22 @@ jobs:
         language: ['java']
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Init CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        language: ${{matrix.language}}
-        
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
-      
-    - name: CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Init CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          language: ${{matrix.language}}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+
   notify-discord:
     runs-on: ubuntu-latest
     needs: generate-allure-report
@@ -165,5 +166,3 @@ jobs:
                -X POST \
                -d '{"username": "GitHub Actions", "content": "❌ Testes falharam! Verifique os logs no GitHub Actions.🔗 [Ver relatório do Allure](https://lucaslarry.github.io/github-actions-grupo06)"}' \
                $DISCORD_WEBHOOK
-
-
