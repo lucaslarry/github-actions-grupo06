@@ -52,3 +52,7 @@ Os relatórios gerados podem ser acessados diretamente via **GitHub Pages**:
 - **GitHub Actions**
 - **GitHub Pages**
 - **Discord Webhook**
+
+## **Grupo**
+- Lucas Larry
+- Marcelo Dalcin
