@@ -60,7 +60,7 @@ public class GetProdutosTest {
                         .statusCode(200)
                         .extract().response();
 
-        List<ProdutoResponse> produtos = response.jsonPath().getList("produtos", ProdutoResponse.class);
+        List<ProdutoResponse> produtos = response.jsonPath().getList("produtos ", ProdutoResponse.class);
 
         for (var produto : produtos) {
             Assert.assertNotNull(produto.getNome());
