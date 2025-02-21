@@ -1,0 +1,34 @@
+{
+    "quantidade": 4,
+    "produtos": [
+        {
+            "nome": "Logitech MX Vertical",
+            "preco": 470,
+            "descricao": "Mouse",
+            "quantidade": 382,
+            "_id": "BeeJh5lz3k6kSIzA"
+        },
+        {
+            "nome": "Fantastic Wooden Car",
+            "preco": 544,
+            "descricao": "New range of formal shirts are designed keeping you in mind. With fits and styling that will make you stand apart",
+            "quantidade": 1,
+            "imagem": "C:\\fakepath\\miamiGuardHouse.png",
+            "_id": "DGDOAd5MbZFjEQZe"
+        },
+        {
+            "nome": "Geladeira com muitas portas",
+            "preco": 5000,
+            "descricao": "Que geladeira braba",
+            "quantidade": 25,
+            "_id": "G93xB5SHyK5kzgBt"
+        },
+        {
+            "nome": "Samsung 60 polegadas",
+            "preco": 5240,
+            "descricao": "TV",
+            "quantidade": 49977,
+            "_id": "K6leHdftCeOJj8BJ"
+        }
+    ]
+}
