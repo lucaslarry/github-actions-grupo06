@@ -45,8 +45,8 @@ public class GetProdutosTest {
         id = response.jsonPath().get("_id");
     }
 
-    @Test(groups = "Funcional")
-    @Tag("Funcional")
+    @Test(groups = "HealthCheck")
+    @Tag("HealthCheck")
     @Story("Usuário realiza um depósito com sucesso")
     @Severity(SeverityLevel.CRITICAL)
     @Description("Valida se um depósito é realizado corretamente com dados válidos")
