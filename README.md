@@ -30,6 +30,32 @@ jobs:
           name: workspace
           path: .
 ```
+### **2️⃣ Testes de HealthCheck**
+- Recupera os arquivos da etapa anterior.
+- Roda os testes de contrato (mvn test -Dgroups=HealthCheck).
+- Armazena os resultados para a geração do relatório Allure.
+```yaml
+    Health-Check:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Baixar workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+
+      - name: Executar testes de HealthCheck
+        run: mvn test -Dgroups=HealthCheck
+        continue-on-error: true
+
+      - name: Coletar resultados do Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-healthCheck
+          path: target/allure-results
+```
 
 ### **2️⃣ Testes de Contrato**
 - Recupera os arquivos da etapa anterior.
