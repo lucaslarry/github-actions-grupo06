@@ -46,7 +46,7 @@ jobs:
 
   test-contrato:
     runs-on: ubuntu-latest
-    needs: build
+    needs: Health-Check
     steps:
       - name: Baixar workspace
         uses: actions/download-artifact@v4
