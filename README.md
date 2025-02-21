@@ -10,6 +10,7 @@ O pipeline está definido no arquivo `.github/workflows/pipeline-github-actions.
 ## 📌 **Como o Pipeline é Disparado?**
 O workflow é acionado automaticamente quando:  
 ✔ Um **Pull Request** ou um **Push**  é aberto na branch `main`.
+✔ Todos os dias as **12:00**
 
 ### **1️⃣ Compilação do Projeto**
 - Baixa o código-fonte do repositório.
