@@ -10,6 +10,7 @@ O pipeline está definido no arquivo `.github/workflows/pipeline-github-actions.
 ## 📌 **Como o Pipeline é Disparado?**
 O workflow é acionado automaticamente quando:  
 ✔ Um **Pull Request** ou um **Push**  é aberto na branch `main`.
+✔ Todos os dias as **12:00**
 
 ### **1️⃣ Compilação do Projeto**
 - Baixa o código-fonte do repositório.
@@ -22,13 +23,47 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+
+      - name: Configurar JDK 17 Temurin
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Build do projeto
         run: mvn clean install -DskipTests
+
       - name: Salvar workspace
         uses: actions/upload-artifact@v4
         with:
           name: workspace
           path: .
+```
+### **2️⃣ Testes de HealthCheck**
+- Recupera os arquivos da etapa anterior.
+- Roda os testes de contrato (mvn test -Dgroups=HealthCheck).
+- Armazena os resultados para a geração do relatório Allure.
+```yaml
+    Health-Check:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Baixar workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+
+      - name: Executar testes de HealthCheck
+        run: mvn test -Dgroups=HealthCheck
+        continue-on-error: true
+
+      - name: Coletar resultados do Allure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-healthCheck
+          path: target/allure-results
 ```
 
 ### **2️⃣ Testes de Contrato**
