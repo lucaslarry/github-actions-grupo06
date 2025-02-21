@@ -22,8 +22,16 @@ jobs:
     steps:
       - name: Checkout do código
         uses: actions/checkout@v4
+
+      - name: Configurar JDK 17 Temurin
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Build do projeto
         run: mvn clean install -DskipTests
+
       - name: Salvar workspace
         uses: actions/upload-artifact@v4
         with:
